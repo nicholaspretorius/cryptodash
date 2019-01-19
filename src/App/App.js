@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import "./App.css";
-import Welcome from "./Welcome";
 import AppLayout from "./AppLayout";
 import AppMenu from "./AppMenu";
 import { AppProvider } from "./AppProvider";
+import Settings from "./../Settings";
 
 class App extends Component {
   constructor(props) {
@@ -16,15 +15,11 @@ class App extends Component {
       <AppLayout>
         <AppProvider>
           <AppMenu appName={this.appName} />
-          <Welcome name={this.appName} />
+          <Settings appName={this.appName} />
         </AppProvider>
       </AppLayout>
     );
   }
 }
-
-Welcome.propTypes = {
-  name: PropTypes.string.isRequired
-};
 
 export default App;
