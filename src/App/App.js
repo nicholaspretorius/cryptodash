@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./App.css";
-
-const Welcome = props => {
-  return <h1>Hello {props.name}</h1>;
-};
+import Welcome from "./Welcome";
 
 class App extends Component {
   render() {
-    return <Welcome name="CryptoDash" />;
+    return <Welcome name={"CryptoDash"} />;
   }
 }
 
