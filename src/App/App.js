@@ -4,6 +4,7 @@ import AppLayout from "./AppLayout";
 import AppMenu from "./AppMenu";
 import { AppProvider } from "./AppProvider";
 import Settings from "./../Settings";
+import Content from "./../Shared/Content";
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +16,9 @@ class App extends Component {
       <AppLayout>
         <AppProvider>
           <AppMenu appName={this.appName} />
-          <Settings appName={this.appName} />
+          <Content>
+            <Settings appName={this.appName} />
+          </Content>
         </AppProvider>
       </AppLayout>
     );

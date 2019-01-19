@@ -2,13 +2,16 @@ import React from "react";
 import Welcome from "./Welcome";
 import PropTypes from "prop-types";
 import ConfirmButton from "./ConfirmButton";
+import Page from "./../Shared/Page";
+import CoinGrid from "./CoinGrid";
 
 export default props => {
   return (
-    <div>
+    <Page name={"settings"}>
       <Welcome name={props.appName} />
       <ConfirmButton />
-    </div>
+      <CoinGrid />
+    </Page>
   );
 };
 
