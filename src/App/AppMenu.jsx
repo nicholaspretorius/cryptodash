@@ -1,24 +1,45 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Menu = styled.ul`
+const Logo = styled.div`
+  font-family: "Do Hyeon", sans-serif;
+  font-size: 1.5em;
+`;
+
+const Menu = styled.div`
   display: grid;
   grid-template-columns: 1fr auto 100px 100px;
   padding-left: 0;
+  margin-bottom: 1em;
 `;
 
-const MenuItem = styled.li`
+const MenuItem = styled.div`
   list-style-type: none;
   font-family: "Do Hyeon", sans-serif;
+  color: white;
+  cursor: pointer;
+  ${props =>
+    props.active &&
+    css`
+      color: red;
+    `}
 `;
+
+const toProperCase = str => {
+  return str.charAt(0).toUpperCase() + str.substr(1);
+};
+
+const MenuButton = ({ name, active }) => {
+  return <MenuItem active={active}>{toProperCase(name)}</MenuItem>;
+};
 
 export default props => {
   return (
     <Menu>
-      <MenuItem>{props.appName}</MenuItem>
+      <Logo>{props.appName}</Logo>
       <MenuItem />
-      <MenuItem>Dashboard</MenuItem>
-      <MenuItem>Settings</MenuItem>
+      <MenuButton name={"dashboard"} active />
+      <MenuButton name={"settings"} />
     </Menu>
   );
 };

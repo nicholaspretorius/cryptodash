@@ -11,7 +11,6 @@ let Welcome = (props, { className }) => {
 };
 
 Welcome = styled(Welcome)`
-  color: red;
   font-weight: bold;
 `;
 
