@@ -1,4 +1,9 @@
 body {
     background-color: #010e2c;
     color: white;
+    font-family: arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Do Hyeon', sans-serif;
 }
