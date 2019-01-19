@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { AppContext } from "./AppProvider";
 
 const Logo = styled.div`
   font-family: "Do Hyeon", sans-serif;
@@ -29,8 +30,16 @@ const toProperCase = str => {
   return str.charAt(0).toUpperCase() + str.substr(1);
 };
 
-const MenuButton = ({ name, active }) => {
-  return <MenuItem active={active}>{toProperCase(name)}</MenuItem>;
+const MenuButton = ({ name }) => {
+  return (
+    <AppContext.Consumer>
+      {({ page, setPage }) => (
+        <MenuItem active={page === name} onClick={() => setPage(name)}>
+          {toProperCase(name)}
+        </MenuItem>
+      )}
+    </AppContext.Consumer>
+  );
 };
 
 export default props => {

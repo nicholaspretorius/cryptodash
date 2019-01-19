@@ -4,6 +4,7 @@ import "./App.css";
 import Welcome from "./Welcome";
 import AppLayout from "./AppLayout";
 import AppMenu from "./AppMenu";
+import { AppProvider } from "./AppProvider";
 
 class App extends Component {
   constructor(props) {
@@ -13,8 +14,10 @@ class App extends Component {
   render() {
     return (
       <AppLayout>
-        <AppMenu appName={this.appName} />
-        <Welcome name={this.appName} />
+        <AppProvider>
+          <AppMenu appName={this.appName} />
+          <Welcome name={this.appName} />
+        </AppProvider>
       </AppLayout>
     );
   }
