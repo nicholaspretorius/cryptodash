@@ -6,6 +6,9 @@ const ConfirmButtonStyled = styled.div`
   margin: 1em;
   color: blue;
   cursor: pointer;
+  &:hover {
+    color: yellow;
+  }
 `;
 
 export default function() {
