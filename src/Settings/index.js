@@ -9,6 +9,7 @@ export default props => {
   return (
     <Page name={"settings"}>
       <Welcome name={props.appName} />
+      <CoinGrid favourites />
       <ConfirmButton />
       <CoinGrid />
     </Page>

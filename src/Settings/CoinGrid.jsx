@@ -10,18 +10,18 @@ export const CoinGridStyled = styled.div`
   grid-gap: 15px;
 `;
 
-const getCoins = coinList => {
-  return Object.keys(coinList).slice(0, 100);
+const getCoins = (coinList, favourites) => {
+  return Object.keys(coinList).slice(0, favourites ? 10 : 100);
 };
 
-export default function() {
+export default function({ favourites }) {
   return (
     <AppContext.Consumer>
       {({ coinList }) => {
         return (
           <CoinGridStyled>
-            {getCoins(coinList).map(coin => (
-              <CoinTile coinKey={coin} key={coin} />
+            {getCoins(coinList, favourites).map(coin => (
+              <CoinTile favourites={favourites} coinKey={coin} key={coin} />
             ))}
           </CoinGridStyled>
         );
