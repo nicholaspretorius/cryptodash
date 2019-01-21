@@ -1,15 +1,22 @@
 import React from "react";
 import cc from "cryptocompare";
+import _ from "lodash";
 
 export const AppContext = React.createContext();
+
+const MAX_SELECTED = 10;
 
 export class AppProvider extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       page: "dashboard",
+      selectedCoins: ["BTC", "ETH", "ADA", "XRP", "DOGE"],
       ...this.savedSettings(),
       setPage: this.setPage,
+      addCoin: this.addCoin,
+      removeCoin: this.removeCoin,
+      isInSelected: this.isInSelected,
       confirmSettings: this.confirmSettings
     };
   }
@@ -24,6 +31,21 @@ export class AppProvider extends React.Component {
     console.log(coinList.Data);
   };
 
+  addCoin = key => {
+    let favourites = [...this.state.selectedCoins];
+    if (favourites.length < MAX_SELECTED) {
+      favourites.push(key);
+      this.setState({ selectedCoins: favourites });
+    }
+  };
+
+  removeCoin = key => {
+    let favourites = _.pull([...this.state.selectedCoins], key);
+    this.setState({ selectedCoins: favourites });
+  };
+
+  isInSelected = key => _.includes(this.state.selectedCoins, key);
+
   confirmSettings = () => {
     this.setState({
       firstVisit: false,
@@ -32,7 +54,7 @@ export class AppProvider extends React.Component {
     localStorage.setItem(
       "cryptoDash",
       JSON.stringify({
-        test: "hello"
+        selectedCoins: this.state.selectedCoins
       })
     );
   };
@@ -43,7 +65,8 @@ export class AppProvider extends React.Component {
     if (!cryptoDashData) {
       return { page: "settings", firstVisit: true };
     }
-    return {};
+    let { selectedCoins } = cryptoDashData;
+    return { selectedCoins };
   }
 
   setPage = page => this.setState({ page });

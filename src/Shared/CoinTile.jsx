@@ -1,17 +1,37 @@
 import React from "react";
 import { AppContext } from "../App/AppProvider";
-import { DeleteableTile, SelectableTile } from "./Tile";
+import { DeleteableTile, DisabledTile, SelectableTile } from "./Tile";
 import CoinItem from "./CoinItem";
 import CoinImage from "./CoinImage";
+
+function clickCoinHandler(favourites, coinKey, addCoin, removeCoin) {
+  return favourites
+    ? () => {
+        removeCoin(coinKey);
+      }
+    : () => {
+        addCoin(coinKey);
+      };
+}
 
 export default function({ coinKey, favourites }) {
   return (
     <AppContext.Consumer>
-      {({ coinList }) => {
+      {({ coinList, addCoin, removeCoin, isInSelected }) => {
         let coin = coinList[coinKey];
-        const TileClass = favourites ? DeleteableTile : SelectableTile;
+
+        let TileClass = SelectableTile;
+
+        if (favourites) {
+          TileClass = DeleteableTile;
+        } else if (isInSelected(coinKey)) {
+          TileClass = DisabledTile;
+        }
+
         return (
-          <TileClass>
+          <TileClass
+            onClick={clickCoinHandler(favourites, coinKey, addCoin, removeCoin)}
+          >
             <CoinItem
               name={coin.CoinName}
               symbol={coin.Symbol}
