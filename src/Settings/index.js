@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import ConfirmButton from "./ConfirmButton";
 import Page from "./../Shared/Page";
 import CoinGrid from "./CoinGrid";
+import Search from "./../Settings/Search";
 
 export default props => {
   return (
@@ -11,6 +12,7 @@ export default props => {
       <Welcome name={props.appName} />
       <CoinGrid favourites />
       <ConfirmButton />
+      <Search />
       <CoinGrid />
     </Page>
   );
