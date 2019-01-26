@@ -1,7 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { SelectableTile } from "../Shared/Tile";
-import { fontSize3, fontSizeBig } from "../Shared/Styles";
+import { fontSize3, fontSizeBig, greenBoxShadow } from "../Shared/Styles";
+import { AppContext } from "../App/AppProvider";
 
 const PriceTileHeader = styled.div`
   display: grid;
@@ -45,11 +46,21 @@ const PriceTileStyled = styled(SelectableTile)`
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 5px;
     `}
+
+  ${props =>
+    props.currentFavourite &&
+    css`
+      ${greenBoxShadow}
+      pointer-events: none;
+    `}
 `;
 
-function PriceTile({ symbol, data }) {
+function PriceTile({ symbol, data, currentFavourite, setCurrentFavourite }) {
   return (
-    <PriceTileStyled>
+    <PriceTileStyled
+      onClick={setCurrentFavourite}
+      currentFavourite={currentFavourite}
+    >
       <PriceTileHeader>
         <JustifyLeft>{symbol}</JustifyLeft>
         <PriceChange data={data} />
@@ -59,9 +70,18 @@ function PriceTile({ symbol, data }) {
   );
 }
 
-function PriceTileCompact({ symbol, data }) {
+function PriceTileCompact({
+  symbol,
+  data,
+  currentFavourite,
+  setCurrentFavourite
+}) {
   return (
-    <PriceTileStyled compact>
+    <PriceTileStyled
+      compact
+      onClick={setCurrentFavourite}
+      currentFavourite={currentFavourite}
+    >
       <JustifyLeft>{symbol}</JustifyLeft>
       <div>${numberFormat(data.PRICE)}</div>
       <JustifyRight>
@@ -76,8 +96,17 @@ export default function({ price, index }) {
   let data = price[symbol]["USD"];
   let TileClass = index < 5 ? PriceTile : PriceTileCompact;
   return (
-    <TileClass symbol={symbol} data={data} compact={index > 5}>
-      {symbol} {data.PRICE}
-    </TileClass>
+    <AppContext.Consumer>
+      {({ currentFavourite, setCurrentFavourite }) => (
+        <TileClass
+          symbol={symbol}
+          data={data}
+          currentFavourite={currentFavourite === symbol}
+          setCurrentFavourite={() => setCurrentFavourite(symbol)}
+        >
+          {symbol} {data.PRICE}
+        </TileClass>
+      )}
+    </AppContext.Consumer>
   );
 }

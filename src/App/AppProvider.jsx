@@ -18,7 +18,8 @@ export class AppProvider extends React.Component {
       removeCoin: this.removeCoin,
       isInSelected: this.isInSelected,
       confirmSettings: this.confirmSettings,
-      setFilteredCoins: this.setFilteredCoins
+      setFilteredCoins: this.setFilteredCoins,
+      setCurrentFavourite: this.setCurrentFavourite
     };
   }
 
@@ -71,9 +72,12 @@ export class AppProvider extends React.Component {
   isInSelected = key => _.includes(this.state.selectedCoins, key);
 
   confirmSettings = () => {
+    const currentFavourite = this.state.selectedCoins[0];
+    console.log(currentFavourite);
     this.setState(
       {
         firstVisit: false,
+        currentFavourite,
         page: "dashboard"
       },
       () => {
@@ -83,7 +87,21 @@ export class AppProvider extends React.Component {
     localStorage.setItem(
       "cryptoDash",
       JSON.stringify({
-        selectedCoins: this.state.selectedCoins
+        selectedCoins: this.state.selectedCoins,
+        currentFavourite
+      })
+    );
+  };
+
+  setCurrentFavourite = symbol => {
+    this.setState({
+      currentFavourite: symbol
+    });
+    localStorage.setItem(
+      "cryptoDash",
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem("cryptoDash")),
+        currentFavourite: symbol
       })
     );
   };
@@ -94,8 +112,8 @@ export class AppProvider extends React.Component {
     if (!cryptoDashData) {
       return { page: "settings", firstVisit: true };
     }
-    let { selectedCoins } = cryptoDashData;
-    return { selectedCoins };
+    let { selectedCoins, currentFavourite } = cryptoDashData;
+    return { selectedCoins, currentFavourite };
   }
 
   setPage = page => this.setState({ page });
