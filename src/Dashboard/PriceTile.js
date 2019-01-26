@@ -28,7 +28,7 @@ const PercentChange = styled.div`
 function PriceChange({ data }) {
   return (
     <PercentChange change={data.CHANGEPCT24HOUR}>
-      <JustifyRight>{numberFormat(data.CHANGEPCT24HOUR)}</JustifyRight>
+      <JustifyRight>{numberFormat(data.CHANGEPCT24HOUR)}%</JustifyRight>
     </PercentChange>
   );
 }

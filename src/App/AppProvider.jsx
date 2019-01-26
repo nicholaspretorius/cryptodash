@@ -1,10 +1,12 @@
 import React from "react";
 import cc from "cryptocompare";
 import _ from "lodash";
+import moment from "moment";
 
 export const AppContext = React.createContext();
 
 const MAX_SELECTED = 10;
+const TIME_UNITS = 10;
 
 export class AppProvider extends React.Component {
   constructor(props) {
@@ -26,6 +28,7 @@ export class AppProvider extends React.Component {
   componentDidMount() {
     this.fetchCoins();
     this.fetchPrices();
+    this.fetchHistorical();
   }
 
   fetchCoins = async () => {
@@ -40,6 +43,42 @@ export class AppProvider extends React.Component {
     const prices = await this.prices();
     console.log("Prices: ", prices);
     this.setState({ prices });
+  };
+
+  fetchHistorical = async () => {
+    if (this.state.firstVisit) return;
+
+    const results = await this.historical();
+    const historical = [
+      {
+        name: this.state.currentFavourite,
+        data: results.map((value, index) => [
+          moment()
+            .subtract({ months: TIME_UNITS - index })
+            .valueOf(),
+          value.USD
+        ])
+      }
+    ];
+    this.setState({ historical });
+  };
+
+  historical = async () => {
+    const promises = [];
+
+    for (let i = TIME_UNITS; i > 0; i--) {
+      promises.push(
+        cc.priceHistorical(
+          this.state.currentFavourite,
+          ["USD"],
+          moment()
+            .subtract({ months: i })
+            .toDate()
+        )
+      );
+    }
+
+    return Promise.all(promises);
   };
 
   prices = async () => {
@@ -77,11 +116,14 @@ export class AppProvider extends React.Component {
     this.setState(
       {
         firstVisit: false,
+        page: "dashboard",
         currentFavourite,
-        page: "dashboard"
+        prices: null,
+        historical: null
       },
       () => {
         this.fetchPrices();
+        this.fetchHistorical();
       }
     );
     localStorage.setItem(
@@ -94,9 +136,13 @@ export class AppProvider extends React.Component {
   };
 
   setCurrentFavourite = symbol => {
-    this.setState({
-      currentFavourite: symbol
-    });
+    this.setState(
+      {
+        currentFavourite: symbol,
+        historical: null
+      },
+      this.fetchHistorical
+    );
     localStorage.setItem(
       "cryptoDash",
       JSON.stringify({
