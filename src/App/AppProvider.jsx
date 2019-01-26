@@ -17,7 +17,8 @@ export class AppProvider extends React.Component {
       addCoin: this.addCoin,
       removeCoin: this.removeCoin,
       isInSelected: this.isInSelected,
-      confirmSettings: this.confirmSettings
+      confirmSettings: this.confirmSettings,
+      setFilteredCoins: this.setFilteredCoins
     };
   }
 
@@ -70,6 +71,8 @@ export class AppProvider extends React.Component {
   }
 
   setPage = page => this.setState({ page });
+
+  setFilteredCoins = filteredCoins => this.setState({ filteredCoins });
 
   render() {
     return (
