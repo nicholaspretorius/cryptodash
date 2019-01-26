@@ -15,7 +15,13 @@ export default function() {
       {({ prices }) => (
         <PriceGrid>
           {prices.map((price, index) => {
-            return <PriceTile key={index} price={price} index={index} />;
+            return (
+              <PriceTile
+                key={`priceTile-${index}`}
+                price={price}
+                index={index}
+              />
+            );
           })}
         </PriceGrid>
       )}

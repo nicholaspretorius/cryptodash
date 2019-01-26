@@ -24,6 +24,11 @@ const MenuItem = styled.div`
     css`
       color: red;
     `}
+  ${props =>
+    props.hidden &&
+    css`
+      display: none;
+    `}
 `;
 
 const toProperCase = str => {
@@ -33,8 +38,12 @@ const toProperCase = str => {
 const MenuButton = ({ name }) => {
   return (
     <AppContext.Consumer>
-      {({ page, setPage }) => (
-        <MenuItem active={page === name} onClick={() => setPage(name)}>
+      {({ firstVisit, page, setPage }) => (
+        <MenuItem
+          active={page === name}
+          onClick={() => setPage(name)}
+          hidden={firstVisit && name === "dashboard"}
+        >
           {toProperCase(name)}
         </MenuItem>
       )}
